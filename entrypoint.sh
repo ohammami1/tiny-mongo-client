@@ -19,7 +19,7 @@ if [ $ENV != 'prod' ] && [ $ENV != 'dev' ] && [ $ENV != 'local' ]; then
 fi
 
 if [ -z "$MONGO_HOST" ]; then
-	export MONGO_HOST=vm_mongo
+	export MONGO_HOST=mongo_server
 else
 	if ! ping -c 1 $MONGO_HOST >/dev/null 2>&1 ; then
 		echo "Mongo Host unreachable, exiting.."
