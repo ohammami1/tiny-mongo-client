@@ -6,5 +6,8 @@ RUN apk add --no-cache  \
 	&& rm /usr/bin/mongoperf
 
 ADD entrypoint.sh /entrypoint.sh
-ENTRYPOINT ["sh", "-c", "'/entrypoint.sh'"]
+
+RUN chmod +x /entrypoint
+
+ENTRYPOINT ["/entrypoint.sh'"]
 
