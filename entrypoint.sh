@@ -50,14 +50,14 @@ if [ $ENV == 'local' ]; then
 	while [[ $COUNTER -lt 60 ]]; do
 		echo "Waiting mongo to initialize... ($COUNTER seconds so far)"
 
-			if echo ''| mongo $MONGO_HOST/admin -u $MONGO_ROOT_USER -p $MONGO_ROOT_PASS --quiet >/dev/null 2>&1; then
-				break
-			fi
+		if echo ''| mongo $MONGO_HOST:$MONGO_PORT/admin --quiet >/dev/null 2>&1; then
+			break
+		fi
 	
 		sleep 2
 		let COUNTER+=2
 	done
-	if ! echo ''| mongo $MONGO_HOST/admin -u $MONGO_ROOT_USER -p $MONGO_ROOT_PASS --quiet >/dev/null 2>&1; then
+	if ! echo ''| mongo $MONGO_HOST:$MONGO_PORT/admin --quiet >/dev/null 2>&1; then
 		echo "Unable to connect to mongodb service, exiting"
 		exit 1
 	fi
@@ -66,9 +66,10 @@ if [ $ENV == 'local' ]; then
 fi
 
 
-if ! echo ''| mongo $MONGO_HOST/admin \
+if ! echo ''| mongo $MONGO_HOST:$MONGO_PORT/$MONGO_DATABASE \
 	-u ${MONGO_USER} \
 	-p ${MONGO_PASS} \
+	--authenticationDatabase "admin" \
 	--quiet >/dev/null 2>&1; then
 
 	if [ $ENV != 'local' ]; then
@@ -85,10 +86,10 @@ if ! echo ''| mongo $MONGO_HOST/admin \
 				role: 'readWrite',
 				db: '${MONGO_DATABASE}'
 			}]
-		});" |  mongo $MONGO_HOST/admin \
-			-u ${MONGO_ROOT_USER} \
-			-p ${MONGO_ROOT_PASS} \
+		});" |  mongo $MONGO_HOST:$MONGO_PORT/admin \
 			--quiet >/dev/null 2>&1;
+
+	# TODO: Check If User Created
 else
 	echo "User $MONGO_USER Credentials Validated"
 fi
