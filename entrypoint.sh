@@ -96,7 +96,7 @@ fi
 
 echo "Mongo hook finished"
 
-# [For Debug]
-#while true; do 
-#	sleep 2
-#done
+# Wait State after Success
+while true; do 
+	sleep 2
+done
