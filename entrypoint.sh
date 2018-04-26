@@ -70,6 +70,11 @@ if ! echo ''| mongo $MONGO_HOST:$MONGO_PORT/$MONGO_DATABASE \
 	-u ${MONGO_USER} \
 	-p ${MONGO_PASS} \
 	--authenticationDatabase "admin" \
+	--quiet >/dev/null 2>&1 || 
+    ! echo ''| mongo $MONGO_HOST:$MONGO_PORT/$MONGO_TEST_DATABASE \
+	-u ${MONGO_USER} \
+	-p ${MONGO_PASS} \
+	--authenticationDatabase "admin" \
 	--quiet >/dev/null 2>&1; then
 
 	if [ $ENV != 'local' ]; then
@@ -85,6 +90,9 @@ if ! echo ''| mongo $MONGO_HOST:$MONGO_PORT/$MONGO_DATABASE \
 			roles: [{
 				role: 'readWrite',
 				db: '${MONGO_DATABASE}'
+			},
+				role: 'readWrite',
+				db: '${MONGO_TEST_DATABASE}'
 			}]
 		});" |  mongo $MONGO_HOST:$MONGO_PORT/admin \
 			--quiet >/dev/null 2>&1;
