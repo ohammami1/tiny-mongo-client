@@ -90,7 +90,7 @@ if ! echo ''| mongo $MONGO_HOST:$MONGO_PORT/$MONGO_DATABASE \
 			roles: [{
 				role: 'readWrite',
 				db: '${MONGO_DATABASE}'
-			},
+			}, {
 				role: 'readWrite',
 				db: '${MONGO_TEST_DATABASE}'
 			}]
